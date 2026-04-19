@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="cz-cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recepty - Bezlepkové recepty od Káti</title>
+    <link rel="stylesheet" href="styly.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html">
+                <div class="logo">
+                <h2>Bezlepkové recepty</h2>
+                <p class="tagline">od Káti</p>
+            </div>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html">Domů</a></li>
+                <li><a href="recepty.html" class="active">Recepty</a></li>
+                <li><a href="index.html#about">O mně</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Recipe List -->
+    <div class="container" style="padding-top: 3rem; padding-bottom: 3rem;">
+        <h1 style="font-size: 2.5rem; text-align: center; color: #e965a9; margin-bottom: 3rem;">Moje recepty 100% bez lepku!</h1>
+        
+        <!-- Recepty z Firebase -->
+        <div id="firebase-recipes-grid" class="recipe-preview-grid" style="margin-top: 2rem;"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Bezlepkové recepty od Káti. Všechna práva vyhrazena.</p>
+            <p class="footer-note">Vyvíjeno s láskou pro všechny bez lepku 💚</p>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="recipes-loader.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

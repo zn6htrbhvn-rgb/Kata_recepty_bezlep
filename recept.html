@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recept - Bezlepkové recepty od Káti</title>
+    <link rel="stylesheet" href="styly.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html">
+                <div class="logo">
+                <h2>Bezlepkové recepty</h2>
+                <p class="tagline">od Káti</p>
+            </div>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html">Domů</a></li>
+                <li><a href="recepty.html">Recepty</a></li>
+                <li><a href="index.html#about">O mně</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Recipe Content (dynamicky načteno) -->
+    <div id="recipe-container" class="recipe-page">
+        <div class="recipe-loading">
+            <div class="spinner-large"></div>
+            <p>Načítám recept...</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Bezlepkové recepty od Káti. Všechna práva vyhrazena.</p>
+            <p class="footer-note">Vyvíjeno s láskou pro všechny bez lepku 💚</p>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const recipeId = urlParams.get('id');
+            const container = document.getElementById('recipe-container');
+
+            if (!recipeId) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 4rem 2rem;">
+                        <h1 style="color: #e965a9;">Recept nenalezen</h1>
+                        <p>Tento recept neexistuje.</p>
+                        <a href="recepty.html" class="back-link">← Zpět na recepty</a>
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                const doc = await db.collection('recipes').doc(recipeId).get();
+                
+                if (!doc.exists) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 4rem 2rem;">
+                            <h1 style="color: #e965a9;">Recept nenalezen</h1>
+                            <p>Tento recept byl smazán nebo neexistuje.</p>
+                            <a href="recepty.html" class="back-link">← Zpět na recepty</a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const recipe = doc.data();
+                document.title = `${recipe.name} - Bezlepkové recepty od Káti`;
+
+                // Sestavení HTML receptu
+                let ingredientsHtml = '';
+                if (recipe.ingredientGroups && recipe.ingredientGroups.length > 0) {
+                    recipe.ingredientGroups.forEach(group => {
+                        ingredientsHtml += `<li><strong>${group.name}:</strong><br>`;
+                        ingredientsHtml += group.items.map(item => item).join('<br>');
+                        ingredientsHtml += `</li>`;
+                    });
+                }
+
+                let stepsHtml = '';
+                if (recipe.steps && recipe.steps.length > 0) {
+                    recipe.steps.forEach(step => {
+                        stepsHtml += `<li>${step}</li>`;
+                    });
+                }
+
+                let tipsHtml = '';
+                if (recipe.tips && recipe.tips.length > 0) {
+                    recipe.tips.forEach(tip => {
+                        tipsHtml += `<li style="margin: 0.8rem 0;">✓ ${tip}</li>`;
+                    });
+                }
+
+                container.innerHTML = `
+                    <div class="recipe-header">
+                        <h1 style="font-size: 2.8rem; margin-bottom: 0.5rem;">${recipe.name}</h1>
+                        ${recipe.description ? `<p style="font-size: 1.1rem; color: #5a6c7d;">${recipe.description}</p>` : ''}
+                    </div>
+
+                    ${recipe.imageUrl ? `<img class="recipe-main-image" src="${recipe.imageUrl}" alt="${recipe.name}">` : ''}
+
+                    <div class="recipe-details">
+                        <div class="recipe-detail-item">
+                            <div class="recipe-detail-label">⏱️ Příprava</div>
+                            <div class="recipe-detail-value">${recipe.prepTime || '—'}</div>
+                        </div>
+                        <div class="recipe-detail-item">
+                            <div class="recipe-detail-label">🍳 Vaření</div>
+                            <div class="recipe-detail-value">${recipe.cookTime || '—'}</div>
+                        </div>
+                        <div class="recipe-detail-item">
+                            <div class="recipe-detail-label">👥 Porce</div>
+                            <div class="recipe-detail-value">${recipe.servings || '—'}</div>
+                        </div>
+                    </div>
+
+                    <div class="recipe-content">
+                        <div class="ingredients">
+                            <h3>Ingredience</h3>
+                            <ul>${ingredientsHtml}</ul>
+                        </div>
+                        <div class="instructions">
+                            <h3>Postup přípravy</h3>
+                            <ol>${stepsHtml}</ol>
+                        </div>
+                    </div>
+
+                    ${tipsHtml ? `
+                    <div style="background: #fafafa; padding: 2rem; border-radius: 12px; margin-top: 2rem; border-left: 4px solid #e965a9;">
+                        <h3 style="color: #e965a9; margin-top: 0;">💡 Tipy a triky</h3>
+                        <ul style="list-style: none; padding: 0;">${tipsHtml}</ul>
+                    </div>
+                    ` : ''}
+
+                    ${recipe.notes ? `
+                    <div style="background: #fff9f5; padding: 2rem; border-radius: 12px; margin-top: 2rem; border-left: 4px solid #f5d5a8;">
+                        <h3 style="color: #d4a574; margin-top: 0;">📝 Poznámky</h3>
+                        <p>${recipe.notes}</p>
+                    </div>
+                    ` : ''}
+
+                    <div style="text-align: center; margin-top: 3rem;">
+                        <a href="recepty.html" style="display: inline-block; background: #e965a9; color: white; padding: 0.8rem 2rem; border-radius: 50px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+                            ← Zpět na recepty
+                        </a>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error loading recipe:', error);
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 4rem 2rem;">
+                        <h1 style="color: #e965a9;">Chyba</h1>
+                        <p>Nepodařilo se načíst recept. Zkontroluj připojení k internetu.</p>
+                        <a href="recepty.html" class="back-link">← Zpět na recepty</a>
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>

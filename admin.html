@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Bezlepkové recepty od Káti</title>
+    <link rel="stylesheet" href="styly.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html">
+                <div class="logo">
+                <h2>Bezlepkové recepty</h2>
+                <p class="tagline">od Káti</p>
+            </div>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html">Domů</a></li>
+                <li><a href="recepty.html">Recepty</a></li>
+                <li><a href="index.html#about">O mně</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Login Section -->
+    <section id="login-section" class="admin-login-section">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <div class="login-icon">🔐</div>
+                    <h1>Admin přihlášení</h1>
+                    <p>Přihlas se pro správu receptů</p>
+                </div>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-username">Uživatelské jméno</label>
+                        <input type="text" id="login-username" class="admin-input" placeholder="Zadej jméno..." required autocomplete="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Heslo</label>
+                        <input type="password" id="login-password" class="admin-input" placeholder="Zadej heslo..." required autocomplete="current-password">
+                    </div>
+                    <div id="login-error" class="login-error" style="display: none;"></div>
+                    <button type="submit" class="admin-submit-btn">🔓 Přihlásit se</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admin Panel -->
+    <section id="admin-panel" class="admin-panel-section" style="display: none;">
+        <div class="container">
+            <!-- Admin Header -->
+            <div class="admin-header">
+                <div class="admin-header-info">
+                    <h1>✨ Admin Panel</h1>
+                    <p>Přihlášený jako: <strong id="admin-user-name">Admin</strong></p>
+                </div>
+                <button id="logout-btn" class="admin-logout-btn">🚪 Odhlásit se</button>
+            </div>
+
+            <!-- Tabs -->
+            <div class="admin-tabs">
+                <button class="admin-tab active" onclick="switchTab('new-recipe')">📝 Nový recept</button>
+                <button class="admin-tab" onclick="switchTab('manage-recipes')">📋 Moje recepty</button>
+            </div>
+
+            <!-- Tab: Nový recept -->
+            <div id="tab-new-recipe" class="admin-tab-content active">
+                <form id="recipe-form" class="recipe-form">
+                    <div class="form-section">
+                        <h2 class="form-section-title">📸 Základní info</h2>
+                        
+                        <div class="form-group">
+                            <label for="recipe-name">Název receptu *</label>
+                            <input type="text" id="recipe-name" class="admin-input" placeholder="Např. Bezlepkové palačinky" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="recipe-description">Krátký popis</label>
+                            <input type="text" id="recipe-description" class="admin-input" placeholder="Např. Křehké a voňavé palačinky bez lepku">
+                        </div>
+
+                        <div class="form-row-3">
+                            <div class="form-group">
+                                <label for="recipe-prep-time">⏱️ Příprava</label>
+                                <input type="text" id="recipe-prep-time" class="admin-input" placeholder="20 min">
+                            </div>
+                            <div class="form-group">
+                                <label for="recipe-cook-time">🍳 Vaření</label>
+                                <input type="text" id="recipe-cook-time" class="admin-input" placeholder="25 min">
+                            </div>
+                            <div class="form-group">
+                                <label for="recipe-servings">👥 Porce</label>
+                                <input type="text" id="recipe-servings" class="admin-input" placeholder="4">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="recipe-image">📷 Fotka receptu</label>
+                            <div class="image-upload-area" onclick="document.getElementById('recipe-image').click()">
+                                <input type="file" id="recipe-image" accept="image/*" style="display: none;">
+                                <div id="image-preview"></div>
+                                <div class="image-upload-placeholder">
+                                    <span class="upload-icon">📷</span>
+                                    <p>Klikni pro nahrání fotky</p>
+                                    <p class="upload-hint">JPG, PNG – max 5 MB</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2 class="form-section-title">🥄 Ingredience</h2>
+                        <div id="ingredient-groups">
+                            <!-- Dynamicky přidávané skupiny -->
+                        </div>
+                        <button type="button" id="add-ingredient-group" class="admin-add-btn">+ Přidat skupinu ingrediencí</button>
+                    </div>
+
+                    <div class="form-section">
+                        <h2 class="form-section-title">👩‍🍳 Postup přípravy</h2>
+                        <div id="steps-container">
+                            <!-- Dynamicky přidávané kroky -->
+                        </div>
+                        <button type="button" id="add-step" class="admin-add-btn">+ Přidat krok</button>
+                    </div>
+
+                    <div class="form-section">
+                        <h2 class="form-section-title">💡 Tipy a triky</h2>
+                        <div id="tips-container">
+                            <!-- Dynamicky přidávané tipy -->
+                        </div>
+                        <button type="button" id="add-tip" class="admin-add-btn">+ Přidat tip</button>
+                    </div>
+
+                    <div class="form-section">
+                        <h2 class="form-section-title">📝 Poznámky</h2>
+                        <div class="form-group">
+                            <textarea id="recipe-notes" class="admin-input" rows="4" placeholder="Osobní poznámky, alternativy ingrediencí..."></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="admin-submit-btn admin-submit-recipe">✨ Přidat recept</button>
+                </form>
+            </div>
+
+            <!-- Tab: Moje recepty -->
+            <div id="tab-manage-recipes" class="admin-tab-content">
+                <div id="admin-recipes-list" class="admin-recipes-list">
+                    <p class="loading-text"><span class="spinner"></span> Načítám recepty...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Bezlepkové recepty od Káti. Všechna práva vyhrazena.</p>
+            <p class="footer-note">Vyvíjeno s láskou pro všechny bez lepku 💚</p>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK (compat verze pro jednoduchost s GitHub Pages) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="admin.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+        // Přepínání tabů
+        function switchTab(tabName) {
+            // Deaktivovat všechny taby
+            document.querySelectorAll('.admin-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.admin-tab-content').forEach(content => content.classList.remove('active'));
+
+            // Aktivovat vybraný tab
+            document.getElementById('tab-' + tabName).classList.add('active');
+            event.target.classList.add('active');
+
+            if (tabName === 'manage-recipes') {
+                loadAdminRecipes();
+            }
+        }
+
+        // Inicializace dynamických polí po načtení
+        document.addEventListener('DOMContentLoaded', function() {
+            addIngredientGroup();
+            addStep();
+            addTip();
+        });
+    </script>
+</body>
+</html>
