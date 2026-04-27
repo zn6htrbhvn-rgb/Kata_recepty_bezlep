@@ -3,7 +3,7 @@
 // ============================================
 
 const firebaseConfig = {
-    apiKey: GoogleApiKey,
+    apiKey: GOOGLEAPIKEY,
     authDomain: "katareceptystranka.firebaseapp.com",
     projectId: "katareceptystranka",
     storageBucket: "katareceptystranka.firebasestorage.app",
