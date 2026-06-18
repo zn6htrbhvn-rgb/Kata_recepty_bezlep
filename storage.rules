@@ -1,0 +1,13 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      // Čtení (zobrazení obrázků) je povoleno všem
+      allow read: if true;
+      
+      // Nahrávání a mazání obrázků je povoleno pouze přihlášeným administrátorům
+      allow write: if request.auth != null;
+    }
+  }
+}

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="cz-cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O mně - Bezlepkově s Káťou</title>
+    <link rel="stylesheet" href="styly.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo-link">
+                <div class="logo">
+                    <h2>Bezlepkově s Káťou</h2>
+                </div>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="recepty.html">RECEPTY</a></li>
+                <li><a href="o-mne.html" class="active">O MNĚ</a></li>
+                <li><a href="admin.html" class="nav-admin-link" title="Admin"><i class="fa-solid fa-key"></i></a></li>
+            </ul>
+            <div class="nav-social">
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-regular fa-heart"></i></a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- About Section -->
+    <section class="about-section" style="min-height: calc(100vh - 250px);">
+        <div class="container">
+            <h2>O mně</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Jmenuji se Káťa Bucharová a mám bezlepkovou dietu od 19 let. Ze začátku to byl trochu šok. Ale postupně jsem si k tomu našla cestu – hlavně přes vaření.</p>
+                    <p>Věřím, že bezlepková strava nemusí být nudná ani omezující. Naopak – může být pestrá, kreativní a i chuťově dobrá.</p>
+                    <p>Na tomto webu s vámi budu sdílet své oblíbené recepty, které mám vyzkoušené a ráda se k nim vracím. Každý recept je otestovaný a dělaný s láskou.</p>
+                </div>
+                <div class="about-features">
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <h3>100% bez lepku</h3>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <h3>Jednoduchá příprava</h3>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <h3>Chutná a zdravá</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Bezlepkové recepty od Káti. Všechna práva vyhrazena.</p>
+            <p class="footer-note">Vyvíjeno s láskou pro všechny bez lepku 💚</p>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK (Not strictly necessary for About page unless you have login state, but keeping for consistency) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
